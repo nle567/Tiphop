@@ -75,3 +75,42 @@ Social media is
 </div>
 </body>
 </html>
+// Example React Native component for video feed
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
+import VideoThumbnail from './VideoThumbnail';
+
+const VideoFeedScreen = () => {
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    // Fetch videos from backend API
+    fetch('https://your-backend-api/videos')
+      .then(response => response.json())
+      .then(data => setVideos(data))
+      .catch(error => console.error('Error fetching videos', error));
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={videos}
+        renderItem={({ item }) => (
+          <VideoThumbnail video={item} />
+        )}
+        keyExtractor={item => item.id}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+  },
+});
+
+export default VideoFeedScreen;
